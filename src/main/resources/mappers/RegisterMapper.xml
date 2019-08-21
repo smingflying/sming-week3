@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.shimingming.senior1.week3.dao.RegisterMapper">
+	<resultMap type="com.shimingming.senior1.week3.vo.RegisterVo"
+		id="regMapper">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="sex" property="sex" />
+		<result column="addr" property="addr" />
+		<result column="company" property="company" />
+		<result column="registid" property="registid" />
+		<result column="yxdate" property="yxdate" />
+		<result column="zyzgzsid" property="zyzgzsid" />
+		<result column="sxzy" property="sxzy" />
+		<association property="pro1" javaType="Profession">
+			<id column="id" property="id" />
+			<result column="pname1" property="name" />
+		</association>
+		<association property="pro2" javaType="Profession">
+			<id column="id" property="id" />
+			<result column="pname2" property="name" />
+		</association>
+	</resultMap>
+	<select id="getIPage" resultMap="regMapper">
+		SELECT
+		t_engineer.id AS id,
+		t_engineer.`name` AS `name`,
+		t_engineer.sex AS sex,
+		t_engineer.addr AS addr,
+		t_engineer.company AS company,
+		t_engineer.sxzy AS sxzy,
+		t_engineer.zyzgzsid AS zyzgzsid,
+		t_engineer.registid AS registid,
+		t_engineer.yxdate AS yxdate,
+		p1.`name` AS pname1,
+		p2.NAME AS pname2
+		FROM
+		t_engineer
+		LEFT JOIN t_profession p1 ON t_engineer.pid1 = p1.id
+		LEFT JOIN t_profession p2 ON t_engineer.pid2 = p2.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+	</select>
+</mapper>
